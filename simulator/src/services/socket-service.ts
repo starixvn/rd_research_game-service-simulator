@@ -1,4 +1,7 @@
+import { getAppConfig } from "../configs";
+import { buildServerUrl } from "../helpers/url-helper";
 import { io, ManagerOptions, Socket, SocketOptions } from "../lib/socket.io-client";
+import * as MsgPackParser from "../lib/socket.io-msgpack-parser";
 
 export type EventSubscription<T> = {
     event: string;
@@ -7,12 +10,14 @@ export type EventSubscription<T> = {
 
 export class SocketClientWrapper {
     private _uri: string;
-    private _options: SocketOptions & ManagerOptions;
+    private _options: Partial<SocketOptions & ManagerOptions>;
     private _socket: Socket | null;
     private _idStore: number;
     private _eventMap: Map<number, EventSubscription<any>> = new Map();
 
-    constructor(uri: string, socketOptions: SocketOptions & ManagerOptions) {
+    constructor(
+        uri: string = DEFAULT_SOCKET_OPTIONS.socketUri, 
+        socketOptions: Partial<SocketOptions & ManagerOptions> = DEFAULT_SOCKET_OPTIONS.socketOption) {
         this._idStore = 0;
         this._uri = uri;
         this._options = socketOptions;
@@ -134,9 +139,21 @@ type EmitOptions<T> = {
 }
 
 function getDefaultSocketOptions() {
-
-
-    return {
-        forceNew: true
+    const { proxy, enableMsgpackParser } = getAppConfig();
+    const socketInfo =  {
+        namespace: "marblefootball",
+        path: "marblefootball"
     }
+    const socketUri = buildServerUrl(socketInfo.namespace);
+    const socketOption = {
+        forceNew: true,
+        transports: ["websocket"],
+        path: `${proxy.path}/${socketInfo.path}/socket.io`,
+        upgrade: false,
+        parser: enableMsgpackParser ? MsgPackParser : undefined,
+    };
+
+    return { socketOption, socketUri };
 }
+
+const DEFAULT_SOCKET_OPTIONS = getDefaultSocketOptions();

@@ -1,21 +1,12 @@
-import * as gc from "@sg/game-client-base";
-import { Button } from "antd";
-import { handle, observer } from "observer";
-import { Component, ReactNode } from "react";
-
-
-@observer
-export class SignInButton extends Component {
-    
-    @handle(gc.Auth.AuthHandlers.SSO)
-    sso() {
-        return new URLSearchParams(window.location.search);
+import chance from "chance";
+import { useObservable } from "react-rx";
+import { test$ } from "../subjects/test";
+export function SignInButton() {
+    const value = useObservable(test$);
+    const onChangeValue = () => {
+        test$.next(chance().name())
     }
-
-
-    render(): ReactNode {
-        return <Button onClick={() => this.sso()}>
-            Sign In
-        </Button>
-    }
+    return <button onClick={() => onChangeValue()}>
+            aa {value}
+        </button>
 }

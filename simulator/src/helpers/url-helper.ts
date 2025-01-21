@@ -19,6 +19,11 @@ export function buildUrl(
     return `${protocol}://${fullDomain}`;
 }
 
+export const buildServerUrl = (path: string) => {
+    const pathStr = `/user/${path}`;
+    return buildUrlWithPath(pathStr);
+};
+
 export function buildUrlWithPath(path: string) {
     return buildUrl(
         getAppConfig().proxy?.subDomain,
