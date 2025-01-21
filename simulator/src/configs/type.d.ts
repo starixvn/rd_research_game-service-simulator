@@ -16,4 +16,5 @@ interface AppConfig {
     proxy: ProxyConfig;
     env: string;
     appType: string;
+    enableMsgpackParser: boolean;
 }
