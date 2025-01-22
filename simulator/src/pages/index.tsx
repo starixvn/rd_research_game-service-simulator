@@ -18,7 +18,7 @@ export function IndexPage() {
     }
 
     return <div>
-        <AuthLabel/>
         <SignInButton handleSocketSignIn={handleSocketSignIn}/>    
+        <AuthLabel/>
     </div>
 }
