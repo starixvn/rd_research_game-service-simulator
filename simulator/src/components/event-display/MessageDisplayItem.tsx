@@ -4,7 +4,7 @@ import Accordion from "@mui/material/Accordion";
 import { ExpandMore } from "@mui/icons-material";
 import { JsonEditor } from "json-edit-react"
 export function MessageDisplayItem({ event }: { event: GameEvent}) {
-    return <Accordion>
+    return <Accordion slotProps={{ transition: { unmountOnExit: true, timeout: 0 } }}>
         <AccordionSummary
           expandIcon={<ExpandMore />}
           aria-controls="panel1-content"

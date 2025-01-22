@@ -18,7 +18,7 @@ export function IndexPage() {
         gameService?.emit("signin", session);
     }
 
-    return <div>
+    return (
             <Grid container spacing={2} columns={16} columnSpacing={2} boxSizing={"border-box"}>
                 <Grid size={8} sx={{border: "1px solid grey"}} maxHeight="100vh">
                     <SignInButton handleSocketSignIn={handleSocketSignIn} />
@@ -26,6 +26,6 @@ export function IndexPage() {
                 <Grid size={8} sx={{border: "1px solid grey", overflow: "scroll"}} maxHeight="100vh">
                     <MessageDisplay/>
                 </Grid>
-            </Grid>
-        </div>
+            </Grid>)
+  
 }
