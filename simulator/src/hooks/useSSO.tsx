@@ -26,7 +26,10 @@ export function useInlineSso() {
     },[token, appType])
 
     useEffect(() => {
-        console.log(session)
     }, [session]);
+
+    return {
+        session
+    }
     
 }

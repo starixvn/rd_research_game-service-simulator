@@ -3,3 +3,7 @@ export function getAppConfig(): AppConfig {
     if (!config) throw new Error("Please specify app config in public/c.<env>.js");
     return config;
 }
+
+export function gameList() {
+    
+}

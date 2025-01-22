@@ -1,19 +1,23 @@
+import { injectable } from "inversify";
 import { getAppConfig } from "../configs";
 import { buildServerUrl } from "../helpers/url-helper";
 import { io, ManagerOptions, Socket, SocketOptions } from "../lib/socket.io-client";
 import * as MsgPackParser from "../lib/socket.io-msgpack-parser";
+
 
 export type EventSubscription<T> = {
     event: string;
     eventHandler: (data: T) => void;
 }
 
+@injectable()
 export class SocketClientWrapper {
     private _uri: string;
     private _options: Partial<SocketOptions & ManagerOptions>;
     private _socket: Socket | null;
     private _idStore: number;
     private _eventMap: Map<number, EventSubscription<any>> = new Map();
+    private _catchAllEvents: Array<(name: string, ...args: any[]) => void> = [];
 
     constructor(
         uri: string = DEFAULT_SOCKET_OPTIONS.socketUri, 
@@ -30,11 +34,13 @@ export class SocketClientWrapper {
     
     get socket() { return this._socket; } 
 
-    async connect(options?: SocketOptions & ManagerOptions) {
+    async connect(options?: Partial<SocketOptions & ManagerOptions>, uri?: string) {
         if (this._socket?.connected) {
             this._socket?.disconnect();
             this._socket = null;
         }
+
+        if (uri) this._uri = uri;
 
         return new Promise<void>((resolve, reject) => {
             try {
@@ -46,7 +52,7 @@ export class SocketClientWrapper {
                         autoConnect: false,
                         ...options
                     });
-                
+                this.establishExistingEvents();
 
                 this._socket?.on("connect", () => {
                     return resolve();
@@ -73,6 +79,7 @@ export class SocketClientWrapper {
 
     clearEventMap() {
         this._eventMap.clear();
+        this._catchAllEvents = [];
     }
 
     disconnect() {
@@ -87,6 +94,11 @@ export class SocketClientWrapper {
             subscription.eventHandler
         )
         return id;
+    }
+
+    subscribeAny(callback: (name: string, ...args: any[]) => void) {
+        this._socket?.onAny(callback);
+        this._catchAllEvents.push(callback);
     }
 
     unsubscribe({ id, name, event }: UnsubscribeOptions) {
@@ -117,6 +129,9 @@ export class SocketClientWrapper {
                 subscription.event,
                 subscription.eventHandler
             )
+        });
+        this._catchAllEvents.forEach(callback => {
+            this._socket?.onAny(callback);
         })
     }
 
@@ -125,6 +140,21 @@ export class SocketClientWrapper {
         this._idStore += 1;
         return id;
     }
+}
+
+export function GetSocketConnectionOption( socketInfo: SocketInfo) {
+    const { proxy, enableMsgpackParser } = getAppConfig();
+    
+    const socketUri = buildServerUrl(socketInfo.namespace);
+    const socketOption = {
+        forceNew: true,
+        transports: ["websocket"],
+        path: `${proxy.path}/${socketInfo.path}/socket.io`,
+        upgrade: false,
+        parser: enableMsgpackParser ? MsgPackParser : undefined,
+    };
+
+    return { socketOption, socketUri };
 }
 
 type UnsubscribeOptions = {
@@ -139,21 +169,10 @@ type EmitOptions<T> = {
 }
 
 function getDefaultSocketOptions() {
-    const { proxy, enableMsgpackParser } = getAppConfig();
-    const socketInfo =  {
+    return GetSocketConnectionOption({
         namespace: "marblefootball",
         path: "marblefootball"
-    }
-    const socketUri = buildServerUrl(socketInfo.namespace);
-    const socketOption = {
-        forceNew: true,
-        transports: ["websocket"],
-        path: `${proxy.path}/${socketInfo.path}/socket.io`,
-        upgrade: false,
-        parser: enableMsgpackParser ? MsgPackParser : undefined,
-    };
-
-    return { socketOption, socketUri };
+    });
 }
 
 const DEFAULT_SOCKET_OPTIONS = getDefaultSocketOptions();

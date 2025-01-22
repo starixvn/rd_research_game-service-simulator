@@ -11,6 +11,11 @@ interface ServerDomainMapper {
     [key: string]: string
 }
 
+interface SocketInfo {
+    path: string;
+    namespace: string;
+}
+
 interface AppConfig {
     serverDomainMapper: ServerDomainMapper;
     proxy: ProxyConfig;

@@ -1,11 +1,14 @@
-import { useObservable } from "react-rx";
-import { test$ } from "../subjects/test";
+import { useGameEvent } from "../hooks/useGameEvent"
 
 export function AuthLabel() {
 
-    const value = useObservable(test$);
+    const { gameEvents } = useGameEvent();
 
-    return <p>
-        {value}
-    </p>
+    return gameEvents.map((item) => {
+        return <p>
+            event: {item.name}
+            payload: {JSON.stringify(item.payload)}
+        </p>
+
+    })
 }
