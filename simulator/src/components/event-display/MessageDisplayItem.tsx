@@ -21,6 +21,7 @@ export function MessageDisplayItem({ event }: { event: GameEvent}) {
                 restrictEdit
                 rootName=""
                 collapseAnimationTime={0}
+                maxWidth="100%"
             />
         </AccordionDetails>
     </Accordion>

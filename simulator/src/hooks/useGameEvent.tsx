@@ -11,7 +11,7 @@ export function useGameEvent() {
         gameCommunicationService
             .gameEventSubject
             .subscribe((value) => {
-                setGameEvents((prev) => [...prev,value]);
+                setGameEvents((prev) => [value,...prev]);
             })
     }, [gameCommunicationService])
 
