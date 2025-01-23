@@ -544,6 +544,11 @@
   resolved "http://npm.lumigame.com/@fontsource/jetbrains-mono/-/jetbrains-mono-5.1.2.tgz#dcd74209b9aa5ba9f21eafaba09c8dd758333cde"
   integrity sha512-muYZK6W3NTrKpKTjoF2dkrtMjXLlPZhniLiLjMmfegRibl2L6jUJh9gB6UcbcZs3zHdIYTmzMkXNbNoI2kXX3Q==
 
+"@heroicons/react@^2.2.0":
+  version "2.2.0"
+  resolved "http://npm.lumigame.com/@heroicons/react/-/react-2.2.0.tgz#0c05124af50434a800773abec8d3af6a297d904b"
+  integrity sha512-LMcepvRaS9LYHJGsF0zzmgKCUim/X3N/DQKc4jepAXJ7l8QxJ1PmxJzqplF2Z3FE4PqBAIGyJAQ/w4B5dsqbtQ==
+
 "@humanfs/core@^0.19.1":
   version "0.19.1"
   resolved "http://npm.lumigame.com/@humanfs/core/-/core-0.19.1.tgz#17c55ca7d426733fe3c561906b8173c336b40a77"
@@ -621,6 +626,20 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
+
+"@monaco-editor/loader@^1.4.0":
+  version "1.4.0"
+  resolved "http://npm.lumigame.com/@monaco-editor/loader/-/loader-1.4.0.tgz#f08227057331ec890fa1e903912a5b711a2ad558"
+  integrity sha512-00ioBig0x642hytVspPl7DbQyaSWRaolYie/UFNjoTdvoKPzo6xrXLhTk9ixgIKcLH5b5vDOjVNiGyY+uDCUlg==
+  dependencies:
+    state-local "^1.0.6"
+
+"@monaco-editor/react@^4.6.0":
+  version "4.6.0"
+  resolved "http://npm.lumigame.com/@monaco-editor/react/-/react-4.6.0.tgz#bcc68671e358a21c3814566b865a54b191e24119"
+  integrity sha512-RFkU9/i7cN2bsq/iTkurMWOEErmYcY6JiQI3Jn+WeR/FGISH8JbHERjpS9oRuSOPvDMJI0Z8nJeKkbOs9sBYQw==
+  dependencies:
+    "@monaco-editor/loader" "^1.4.0"
 
 "@mui/core-downloads-tracker@^6.4.1":
   version "6.4.1"
@@ -2163,6 +2182,11 @@ source-map@^0.5.7:
   version "0.5.7"
   resolved "http://npm.lumigame.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
+
+state-local@^1.0.6:
+  version "1.0.7"
+  resolved "http://npm.lumigame.com/state-local/-/state-local-1.0.7.tgz#da50211d07f05748d53009bee46307a37db386d5"
+  integrity sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==
 
 strip-json-comments@^3.1.1:
   version "3.1.1"
