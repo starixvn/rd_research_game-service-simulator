@@ -3,13 +3,9 @@ import { useState } from "react";
 const gameList = [
     {
         name: "Pusoy",
-        namespace: "pusoy",
-        path: "pusoy"
     },
     {
         name: "MarbleFootball",
-        namespace: "marblefootball",
-        path: "marblefootball"
     }
 ]
 

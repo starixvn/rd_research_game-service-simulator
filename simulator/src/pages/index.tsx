@@ -21,13 +21,11 @@ export function IndexPage() {
     function handleSocketSignIn() {
         flushGameEvents();
         gameService?.initialize({
-            namespace: currentGame.namespace,
-            path: currentGame.path
+            namespace: currentGame.name.toLowerCase(),
+            path: currentGame.name.toLowerCase()
         });
         gameService?.emit("signin", session);
     }
-
-
 
     return (
             <Grid
