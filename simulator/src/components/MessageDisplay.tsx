@@ -1,8 +1,7 @@
-import { useGameEvent } from "../hooks/useGameEvent"
+import { GameEvent } from "../subjects/event";
 import MessageDisplayItem from "./event-display/MessageDisplayItem";
 
-export function MessageDisplay() {
-    const { gameEvents } = useGameEvent();
+export function MessageDisplay({ gameEvents }: { gameEvents: GameEvent[] }) {
 
     return gameEvents.map((item, index, array) => {
         return {

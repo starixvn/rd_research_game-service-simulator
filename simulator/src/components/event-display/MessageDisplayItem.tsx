@@ -4,10 +4,22 @@ import Accordion from "@mui/material/Accordion";
 import { ExpandMore } from "@mui/icons-material";
 import { JsonEditor } from "json-edit-react"
 
+enum EventColors {
+    FINISH = '#ffeb3b',
+    START_PLACING_BET = '#a5d6a7',
+    DEFAULT = '#fafafa',
+}
+
 const getPayloadInfo = (payload: any) => {
     const isJsonObject = payload && typeof payload === 'object' && !Array.isArray(payload);
     const firstKey = isJsonObject && Object.keys(payload).length > 0 ? Object.keys(payload)[0] : '';
     return { firstKey };
+};
+
+const getBackgroundColor = (payload: any): string => {
+    if (payload?.finish) return EventColors.FINISH;
+    if (payload?.spb) return EventColors.START_PLACING_BET;
+    return EventColors.DEFAULT;
 };
 
 const MessageDisplayItem = ({ event }: { event: GameEvent}) => {
@@ -16,7 +28,7 @@ const MessageDisplayItem = ({ event }: { event: GameEvent}) => {
     return <Accordion 
         slotProps={{ transition: { unmountOnExit: true, timeout: 0 } }}
         sx={{ 
-            backgroundColor: event.payload?.finish ? '#ffeb3b' : '#fafafa',
+            backgroundColor: getBackgroundColor(event.payload),
             '& .MuiAccordionSummary-root': {
               minHeight: '40px',
               '&.Mui-expanded': {

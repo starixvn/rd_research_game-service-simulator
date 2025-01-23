@@ -5,10 +5,8 @@ import { useInjection } from "./useInjection";
 export function usePayloadSubmit() {
     const gameCommunicationService = useInjection<GameCommunicationService>(GameCommunicationService);
 
-    const [payload, setPayload] = useState<string>(`{
-  "name": "Sample Event"
-}`);
-    const [eventName, setEventName] = useState<string>("");
+    const [payload, setPayload] = useState<string>("null");
+    const [eventName, setEventName] = useState<string>("inGame");
 
     const isValidPayload = useMemo(() => {
         try {

@@ -170,8 +170,8 @@ type EmitOptions<T> = {
 
 function getDefaultSocketOptions() {
     return GetSocketConnectionOption({
-        namespace: "marblefootball",
-        path: "marblefootball"
+        namespace: "pusoy",
+        path: "pusoy"
     });
 }
 

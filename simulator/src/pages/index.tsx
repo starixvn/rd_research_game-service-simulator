@@ -8,17 +8,22 @@ import { usePayloadSubmit } from "../hooks/usePayloadSubmit";
 import { Editor } from "../components/Editor";
 import { EventNameInput } from "../components/EventNameInput";
 import { SendSocketEventButton } from "../components/SendSocketEventButton";
+import { useGameName } from "../hooks/useGameName";
+import { GameNameSelect } from "../components/GameNameSelect";
+import { useGameEvent } from "../hooks/useGameEvent";
 
 export function IndexPage() {
     const { session } = useInlineSso();
+    const { gameList, currentGame, currentGameIndex, setCurrentGameIndex } = useGameName();
     const gameService = useInjection<GameCommunicationService>(GameCommunicationService);
     const { payload, handlePayloadChange, eventName, setEventName, handleSubmit, isValidPayload } = usePayloadSubmit();
+    const { gameEvents, flushGameEvents } = useGameEvent();
     function handleSocketSignIn() {
+        flushGameEvents();
         gameService?.initialize({
-            namespace: "marblefootball",
-            path: "marblefootball"
+            namespace: currentGame.namespace,
+            path: currentGame.path
         });
-
         gameService?.emit("signin", session);
     }
 
@@ -42,7 +47,11 @@ export function IndexPage() {
                         boxSizing: "border-box",
                         padding: "1rem",
                     }}
-                >
+                >   <GameNameSelect 
+                        gameList={gameList}
+                        currentGameIndex={currentGameIndex}
+                        setCurrentGameIndex={setCurrentGameIndex}
+                    />
                     <SignInButton handleSocketSignIn={handleSocketSignIn} />
                     <Editor isValidJson={isValidPayload} value={payload} onChange={handlePayloadChange} />
                     <EventNameInput value={eventName} onChange={setEventName} />
@@ -58,7 +67,7 @@ export function IndexPage() {
                         padding: "1rem",
                     }}
                 >
-                    <MessageDisplay/>
+                    <MessageDisplay gameEvents={gameEvents} />
                 </Grid>
             </Grid>)
   
