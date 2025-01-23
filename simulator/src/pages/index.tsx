@@ -19,11 +19,36 @@ export function IndexPage() {
     }
 
     return (
-            <Grid container spacing={2} columns={16} columnSpacing={2} boxSizing={"border-box"}>
-                <Grid size={8} sx={{border: "1px solid grey"}} maxHeight="100vh">
+            <Grid
+                container 
+                spacing={2} 
+                columns={16} 
+                columnSpacing={2} 
+                boxSizing={"border-box"}
+                height="100vh"
+                sx={{ margin: 0, padding: "1rem" }}
+            >
+                <Grid 
+                    size={8} 
+                    sx={{
+                        border: "1px solid grey",
+                        height: "100%",
+                        boxSizing: "border-box",
+                        padding: "1rem",
+                    }}
+                >
                     <SignInButton handleSocketSignIn={handleSocketSignIn} />
                 </Grid>
-                <Grid size={8} sx={{border: "1px solid grey", overflow: "scroll"}} maxHeight="100vh">
+                <Grid 
+                    size={8} 
+                    sx={{
+                        border: "1px solid grey",
+                        overflow: "scroll",
+                        height: "100%",
+                        boxSizing: "border-box",
+                        padding: "1rem",
+                    }}
+                >
                     <MessageDisplay/>
                 </Grid>
             </Grid>)
