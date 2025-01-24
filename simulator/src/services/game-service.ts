@@ -18,7 +18,7 @@ export class GameServiceClient {
     }
 
     async getGameConfiguration() {
-        const response = await this._axios.get<GameConfig[]>(`/configuration`);
+        const response = await this._axios.get<GameConfig[]>(`/configurations`);
         return response.data;
     }
 }

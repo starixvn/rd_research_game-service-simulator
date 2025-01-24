@@ -44,7 +44,6 @@ export class SocketClientWrapper {
 
         return new Promise<void>((resolve, reject) => {
             try {
-
                 this._socket = io(
                     this._uri,
                     {
@@ -152,6 +151,9 @@ export function GetSocketConnectionOption( socketInfo: SocketInfo) {
         path: `${proxy.path}/${socketInfo.path}/socket.io`,
         upgrade: false,
         parser: enableMsgpackParser ? MsgPackParser : undefined,
+        reconnectionAttempts: 2,
+        timeout: 5000,
+        
     };
 
     return { socketOption, socketUri };

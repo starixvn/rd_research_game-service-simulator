@@ -11,18 +11,18 @@ export function useInlineSso() {
     const appType = searchParams.get("appType");
 
     useEffect(() => {
-    async function inlineSSO(token: string, appType: string) {
-        const userSession = await sso(token, Number(appType));
-        if(userSession)  { 
-            setSession(userSession); 
-            searchParams.delete("token");
-            searchParams.delete("appType");
-            setSearchparams(searchParams);
-        }
-    }        
-    if (token && appType) {
-        inlineSSO(token, appType);
-        }
+        async function inlineSSO(token: string, appType: string) {
+            const userSession = await sso(token, Number(appType));
+            if(userSession)  { 
+                setSession(userSession); 
+                searchParams.delete("token");
+                searchParams.delete("appType");
+                setSearchparams(searchParams);
+            }
+        }        
+        if (token && appType) {
+            inlineSSO(token, appType);
+            }
     },[token, appType])
 
     useEffect(() => {

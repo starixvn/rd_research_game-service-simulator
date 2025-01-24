@@ -1,7 +1,6 @@
-import { MessageDisplay } from "../components/MessageDisplay";
+import { MessageDisplay } from "../components/event-display/MessageDisplay";
 import { SignInButton } from "../components/SignInButton";
 import { GameCommunicationService } from "../services/game-communication-service";
-import { useInlineSso } from "../hooks/useSSO";
 import { useInjection } from "../hooks/useInjection";
 import { Grid2 as Grid } from "@mui/material";
 import { usePayloadSubmit } from "../hooks/usePayloadSubmit";
@@ -11,9 +10,12 @@ import { SendSocketEventButton } from "../components/SendSocketEventButton";
 import { useGameName } from "../hooks/useGameName";
 import { GameNameSelect } from "../components/GameNameSelect";
 import { useGameEvent } from "../hooks/useGameEvent";
+import { SessionContext } from "../contexts/session-context";
+import { useContext } from "react";
+import { TemplateDisplay } from "../components/TemplateDisplay";
 
 export function IndexPage() {
-    const { session } = useInlineSso();
+    const { session } = useContext(SessionContext);
     const { gameList, currentGame, currentGameIndex, setCurrentGameIndex } = useGameName();
     const gameService = useInjection<GameCommunicationService>(GameCommunicationService);
     const { payload, handlePayloadChange, eventName, setEventName, handleSubmit, isValidPayload } = usePayloadSubmit();
@@ -54,6 +56,7 @@ export function IndexPage() {
                     <Editor isValidJson={isValidPayload} value={payload} onChange={handlePayloadChange} />
                     <EventNameInput value={eventName} onChange={setEventName} />
                     <SendSocketEventButton onClick={handleSubmit} disabled={!isValidPayload}/>
+                    <TemplateDisplay/>
                 </Grid>
                 <Grid 
                     size={8} 

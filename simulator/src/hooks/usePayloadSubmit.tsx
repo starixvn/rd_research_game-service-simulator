@@ -1,12 +1,12 @@
-import { useState, useMemo } from "react";
+import { useMemo, useContext } from "react";
 import { GameCommunicationService } from "../services/game-communication-service";
 import { useInjection } from "./useInjection";
+import { EventContext } from "../contexts/event-context";
 
 export function usePayloadSubmit() {
     const gameCommunicationService = useInjection<GameCommunicationService>(GameCommunicationService);
 
-    const [payload, setPayload] = useState<string>("null");
-    const [eventName, setEventName] = useState<string>("inGame");
+    const { payload, setPayload, eventName, setEventName } = useContext(EventContext);
 
     const isValidPayload = useMemo(() => {
         try {

@@ -1,5 +1,5 @@
-import { GameEvent } from "../subjects/event";
-import MessageDisplayItem from "./event-display/MessageDisplayItem";
+import { GameEvent } from "../../subjects/event";
+import MessageDisplayItem from "./MessageDisplayItem";
 
 export function MessageDisplay({ gameEvents }: { gameEvents: GameEvent[] }) {
 

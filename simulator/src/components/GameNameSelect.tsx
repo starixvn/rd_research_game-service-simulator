@@ -19,7 +19,9 @@ export function GameNameSelect({
         return <MenuItem key={index} value={index}>{game.name}</MenuItem>
     })
 
-    return <Select
+    const hasAnyGame = gameList.length > 0;
+
+    return hasAnyGame ? <Select
         value={currentGameIndex}
         onChange={handleChange}
         size="small"
@@ -29,5 +31,5 @@ export function GameNameSelect({
         }}
     >
         {gameListDisplay}
-    </Select>
+    </Select> : null;
 }

@@ -6,6 +6,8 @@ import { GameCommunicationService } from "./services/game-communication-service"
 import { SocketClientWrapper } from "./services/socket-service";
 import { createErrorMessageEventSubject } from "./subjects/error";
 import { createGameEventSubject } from "./subjects/event";
+import { SessionProvider } from "./contexts/session-context";
+import { EventContextProvider } from "./contexts/event-context";
 
 const container = new Container();
 
@@ -23,11 +25,17 @@ container.bind(GameCommunicationService)
 function App() {
 
   return <ContainerProvider container={container}>
-    <BrowserRouter>
-      <Routes>
-        <Route element={<IndexPage/>} index/>
-      </Routes>
-    </BrowserRouter>
+    
+      <BrowserRouter>
+        <Routes>  
+          <Route element={
+            <SessionProvider>
+                <EventContextProvider>
+                  <IndexPage/>
+                </EventContextProvider>
+            </SessionProvider>} index/>
+        </Routes>
+      </BrowserRouter>
   </ContainerProvider>
 
 }
