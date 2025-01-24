@@ -56,7 +56,7 @@ export function TemplateDisplay() {
         </Typography>
         {
             eventTemplates.map((template) => {
-                return <TemplateDisplayButton template={template} onTemplateChange={handleTemplate}/>
+                return <TemplateDisplayButton key={template.name} template={template} onTemplateChange={handleTemplate}/>
             })
         }
 

@@ -13,6 +13,7 @@ import { useGameEvent } from "../hooks/useGameEvent";
 import { SessionContext } from "../contexts/session-context";
 import { useContext } from "react";
 import { TemplateDisplay } from "../components/TemplateDisplay";
+import { DisconnectButton } from "../components/DisconnectButton";
 
 export function IndexPage() {
     const { session } = useContext(SessionContext);
@@ -27,6 +28,10 @@ export function IndexPage() {
             path: currentGame.name.toLowerCase()
         });
         gameService?.emit("signin", session);
+    }
+
+    function handleSocketDisconnect() {
+        gameService?.destroy();
     }
 
     return (
@@ -53,6 +58,7 @@ export function IndexPage() {
                         setCurrentGameIndex={setCurrentGameIndex}
                     />
                     <SignInButton handleSocketSignIn={handleSocketSignIn} />
+                    <DisconnectButton handleSocketSignIn={handleSocketDisconnect} />
                     <Editor isValidJson={isValidPayload} value={payload} onChange={handlePayloadChange} />
                     <EventNameInput value={eventName} onChange={setEventName} />
                     <SendSocketEventButton onClick={handleSubmit} disabled={!isValidPayload}/>
