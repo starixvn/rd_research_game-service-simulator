@@ -1,8 +1,8 @@
 import CodeEditor from "@monaco-editor/react";
 
-
 export function Editor({ value, onChange, isValidJson }: { isValidJson: boolean, value: string, onChange: (value: string | undefined) => void  }) {
     
+
     return (
         <div style={{ 
             marginTop: '1rem', 

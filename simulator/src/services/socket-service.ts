@@ -1,4 +1,4 @@
-import { injectable } from "inversify";
+import ContainerLib from "../lib/container";
 import { getAppConfig } from "../configs";
 import { buildServerUrl } from "../helpers/url-helper";
 import { io, ManagerOptions, Socket, SocketOptions } from "../lib/socket.io-client";
@@ -10,7 +10,7 @@ export type EventSubscription<T> = {
     eventHandler: (data: T) => void;
 }
 
-@injectable()
+@ContainerLib.injectable()
 export class SocketClientWrapper {
     private _uri: string;
     private _options: Partial<SocketOptions & ManagerOptions>;
@@ -72,8 +72,20 @@ export class SocketClientWrapper {
     }
 
     dispose() {
+        if (this.socket && this._catchAllEvents) {
+            this._catchAllEvents.forEach((event) => {
+                this.socket?.offAny(event);
+            })
+        }
+        if (this.socket && this._eventMap) {
+            this._eventMap.forEach((subscription) => {
+                this._socket?.off(subscription.event, subscription.eventHandler);
+            });
+        }
         if (this._socket?.connected) this.socket?.disconnect();
         this._socket = null;
+        this._idStore = 0;
+        this.clearEventMap();
     }
 
     clearEventMap() {
@@ -98,6 +110,11 @@ export class SocketClientWrapper {
     subscribeAny(callback: (name: string, ...args: any[]) => void) {
         this._socket?.onAny(callback);
         this._catchAllEvents.push(callback);
+    }
+
+    unsubscribeAny(callback: (name: string, ...args: any[]) => void) {
+        this._socket?.offAny(callback);
+        this._catchAllEvents = this._catchAllEvents.filter(item => item !== callback);
     }
 
     unsubscribe({ id, name, event }: UnsubscribeOptions) {

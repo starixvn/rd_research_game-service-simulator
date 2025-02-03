@@ -1,4 +1,4 @@
-import {  injectable } from "inversify";
+import ContainerLib from "../lib/container";
 import "reflect-metadata";
 import { Subject } from "rxjs";
 import { ErrorMessage } from "../subjects/error";
@@ -6,7 +6,7 @@ import { GameEvent } from "../subjects/event";
 import { GetSocketConnectionOption as getSocketConnectionOption, SocketClientWrapper } from "./socket-service";
 
 
-@injectable()
+@ContainerLib.injectable()
 export class GameCommunicationService {
     private _socket: SocketClientWrapper;
     private _gameEventSubject: Subject<GameEvent>;
@@ -28,7 +28,6 @@ export class GameCommunicationService {
 
     async initialize(socketInfo: SocketInfo) {
         this._socket.dispose();
-        this._socket.clearEventMap();
         const option = getSocketConnectionOption(socketInfo);
         try {
             this._socket.subscribeAny((event, payload) => {

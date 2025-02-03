@@ -1,4 +1,4 @@
-import { Container } from "inversify";
+import ContainerLib from "./lib/container";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ContainerProvider } from "./contexts/container-context";
 import { IndexPage } from "./pages";
@@ -9,7 +9,7 @@ import { createGameEventSubject } from "./subjects/event";
 import { SessionProvider } from "./contexts/session-context";
 import { EventContextProvider } from "./contexts/event-context";
 
-const container = new Container();
+const container = new ContainerLib.Container();
 
 const gameEventSubject = createGameEventSubject();
 const errorMessageSubject = createErrorMessageEventSubject();

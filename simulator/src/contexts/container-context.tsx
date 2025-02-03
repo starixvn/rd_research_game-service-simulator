@@ -1,11 +1,11 @@
-import { Container } from "inversify";
+import ContainerLib from "../lib/container";
 import React, { PropsWithChildren } from "react";
 
 export const ContainerContext = 
-    React.createContext<{container: Container | null }>({ container: null });
+    React.createContext<{container: ContainerLib.Container | null }>({ container: null });
 
 type ContainerContextProps = PropsWithChildren<{
-    container: Container;
+    container: ContainerLib.Container;
 }>
 
 export const ContainerProvider: React.FC<ContainerContextProps> = (props) => {

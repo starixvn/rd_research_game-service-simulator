@@ -1,4 +1,4 @@
-import { interfaces } from "inversify";
+import { interfaces } from "../lib/container";
 import { useContext } from "react";
 import { ContainerContext } from "../contexts/container-context";
 
