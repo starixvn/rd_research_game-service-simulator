@@ -14,21 +14,29 @@ import { SessionContext } from "../contexts/session-context";
 import { useContext } from "react";
 import { TemplateDisplay } from "../components/TemplateDisplay";
 import { DisconnectButton } from "../components/DisconnectButton";
+import { CustomUrlContext } from "../contexts/custom-url-context";
+import { CustomUrlEditor } from "../components/CustomUrlEditor";
 
 export function IndexPage() {
     const { session } = useContext(SessionContext);
+    const { useCustomUrl, customUrl } = useContext(CustomUrlContext);
     const { gameList, currentGame, currentGameIndex, setCurrentGameIndex } = useGameName();
     const gameService = useInjection<GameCommunicationService>(GameCommunicationService);
     const { payload, handlePayloadChange, eventName, setEventName, handleSubmit, isValidPayload } = usePayloadSubmit();
     const { gameEvents, flushGameEvents } = useGameEvent();
+    
     function handleSocketSignIn() {
         flushGameEvents();
         gameService?.initialize({
             namespace: currentGame.name.toLowerCase(),
-            path: currentGame.name.toLowerCase()
+            path: currentGame.name.toLowerCase(),
+            useCustomUrl,
+            customUrl
         });
         gameService?.emit("signin", session);
     }
+
+
 
     function handleSocketDisconnect() {
         gameService?.destroy();
@@ -57,6 +65,7 @@ export function IndexPage() {
                         currentGameIndex={currentGameIndex}
                         setCurrentGameIndex={setCurrentGameIndex}
                     />
+                    <CustomUrlEditor/>
                     <SignInButton handleSocketSignIn={handleSocketSignIn} />
                     <DisconnectButton handleSocketSignIn={handleSocketDisconnect} />
                     <Editor isValidJson={isValidPayload} value={payload} onChange={handlePayloadChange} />

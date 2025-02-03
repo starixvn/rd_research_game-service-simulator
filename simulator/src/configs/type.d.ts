@@ -14,6 +14,8 @@ interface ServerDomainMapper {
 interface SocketInfo {
     path: string;
     namespace: string;
+    useCustomUrl?: boolean;
+    customUrl?: string;
 }
 
 interface AppConfig {

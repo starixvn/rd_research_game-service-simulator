@@ -36,9 +36,16 @@ export class GameCommunicationService {
                     payload: payload
                 });
             });
+        
+        const uri = socketInfo.useCustomUrl && socketInfo.customUrl 
+            ? socketInfo.customUrl
+            : option.socketUri;
+            
+            
+
             await this._socket.connect(
                 option.socketOption, 
-                option.socketUri);
+                uri);
            
             
         } catch (err) {
@@ -47,6 +54,7 @@ export class GameCommunicationService {
                 error: error.name,
                 payload: error
             })
+            console.log(err);
         }
     }
 
