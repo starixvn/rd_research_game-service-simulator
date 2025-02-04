@@ -25,6 +25,10 @@ export class GameCommunicationService {
     get gameEventSubject() {
         return this._gameEventSubject;
     }
+    
+    get errorEventSubject() {
+        return this._errorMessageSubject;
+    }
 
     async initialize(socketInfo: SocketInfo) {
         this._socket.dispose();
@@ -36,6 +40,16 @@ export class GameCommunicationService {
                     payload: payload
                 });
             });
+            this._socket.subscribe({
+                event: "disconnect",
+                eventHandler: () => {
+                    this._gameEventSubject.next({
+                        name: "disconnect",
+                        payload: null
+                    });
+                },
+            })
+
         
             const uri = option.socketUri;
 
@@ -47,7 +61,7 @@ export class GameCommunicationService {
         } catch (err) {
             const error = err as Error;
             this._errorMessageSubject.next({
-                error: error.name,
+                error: error.message,
                 payload: error
             })
             console.log(err);
@@ -62,6 +76,10 @@ export class GameCommunicationService {
     }
 
     destroy() {
+        this._gameEventSubject.next({
+            name: "disconnect",
+            payload: null
+        });
         this._socket.dispose();
         this._socket.clearEventMap();
     }

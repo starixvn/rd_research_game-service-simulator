@@ -58,6 +58,7 @@ export class SocketClientWrapper {
                 });
 
                 this._socket?.on("connect_error", (err: Error) => {
+                    console.error(err);
                     this.dispose();
                     return reject(err);
                 });

@@ -16,6 +16,8 @@ import { TemplateDisplay } from "../components/TemplateDisplay";
 import { DisconnectButton } from "../components/DisconnectButton";
 import { CustomUrlContext } from "../contexts/custom-url-context";
 import { CustomUrlEditor } from "../components/CustomUrlEditor";
+import { SnackbarProvider } from "notistack";
+import { useErrorEvent } from "../hooks/useErrorEvent";
 
 export function IndexPage() {
     const { session } = useContext(SessionContext);
@@ -25,6 +27,8 @@ export function IndexPage() {
     const { payload, handlePayloadChange, eventName, setEventName, handleSubmit, isValidPayload } = usePayloadSubmit();
     const { gameEvents, flushGameEvents } = useGameEvent();
     
+    useErrorEvent();
+
     function handleSocketSignIn() {
         flushGameEvents();
         gameService?.initialize({
@@ -52,6 +56,7 @@ export function IndexPage() {
                 height="100vh"
                 sx={{ margin: 0, padding: "1rem" }}
             >
+                <SnackbarProvider/>
                 <Grid 
                     size={8} 
                     sx={{
@@ -59,6 +64,7 @@ export function IndexPage() {
                         height: "100%",
                         boxSizing: "border-box",
                         padding: "1rem",
+                        overflow: "scroll",
                     }}
                 >   <GameNameSelect 
                         gameList={gameList}

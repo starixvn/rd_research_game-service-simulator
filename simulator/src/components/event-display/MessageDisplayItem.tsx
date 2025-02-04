@@ -8,6 +8,7 @@ enum EventColors {
     FINISH = '#ffeb3b',
     START_PLACING_BET = '#a5d6a7',
     DEFAULT = '#fafafa',
+    DISCONNECT = '#ff0000'
 }
 
 const getPayloadInfo = (payload: any) => {
@@ -16,9 +17,10 @@ const getPayloadInfo = (payload: any) => {
     return { firstKey };
 };
 
-const getBackgroundColor = (payload: any): string => {
-    if (payload?.finish) return EventColors.FINISH;
-    if (payload?.spb) return EventColors.START_PLACING_BET;
+const getBackgroundColor = (event: GameEvent): string => {
+    if (event.payload?.finish) return EventColors.FINISH;
+    if (event.payload?.spb) return EventColors.START_PLACING_BET;
+    if (event.name === "disconnect") return EventColors.DISCONNECT;
     return EventColors.DEFAULT;
 };
 
@@ -28,7 +30,7 @@ const MessageDisplayItem = ({ event }: { event: GameEvent}) => {
     return <Accordion 
         slotProps={{ transition: { unmountOnExit: true, timeout: 0 } }}
         sx={{ 
-            backgroundColor: getBackgroundColor(event.payload),
+            backgroundColor: getBackgroundColor(event),
             '& .MuiAccordionSummary-root': {
               minHeight: '40px',
               '&.Mui-expanded': {
