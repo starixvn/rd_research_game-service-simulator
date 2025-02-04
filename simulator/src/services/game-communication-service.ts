@@ -37,11 +37,7 @@ export class GameCommunicationService {
                 });
             });
         
-        const uri = socketInfo.useCustomUrl && socketInfo.customUrl 
-            ? socketInfo.customUrl
-            : option.socketUri;
-            
-            
+            const uri = option.socketUri;
 
             await this._socket.connect(
                 option.socketOption, 

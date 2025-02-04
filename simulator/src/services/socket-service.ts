@@ -1,6 +1,6 @@
 import ContainerLib from "../lib/container";
 import { getAppConfig } from "../configs";
-import { buildServerUrl } from "../helpers/url-helper";
+import { buildCustomDevUrl, buildServerUrl } from "../helpers/url-helper";
 import { io, ManagerOptions, Socket, SocketOptions } from "../lib/socket.io-client";
 import * as MsgPackParser from "../lib/socket.io-msgpack-parser";
 
@@ -161,11 +161,13 @@ export class SocketClientWrapper {
 export function GetSocketConnectionOption( socketInfo: SocketInfo) {
     const { proxy, enableMsgpackParser } = getAppConfig();
     
-    const socketUri = buildServerUrl(socketInfo.namespace);
+    const socketUri = socketInfo.useCustomUrl && socketInfo.customUrl 
+         ? buildCustomDevUrl(socketInfo.customUrl, socketInfo.namespace)
+         : buildServerUrl(socketInfo.namespace);
     const socketOption = {
         forceNew: true,
         transports: ["websocket"],
-        path: `${proxy.path}/${socketInfo.path}/socket.io`,
+        path: socketInfo.useCustomUrl ? '' :`${proxy.path}/${socketInfo.path}/socket.io`,
         upgrade: false,
         parser: enableMsgpackParser ? MsgPackParser : undefined,
         reconnectionAttempts: 2,
