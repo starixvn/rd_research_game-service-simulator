@@ -8,14 +8,9 @@ import { createErrorMessageEventSubject } from "./subjects/error";
 import { createGameEventSubject } from "./subjects/event";
 import { SessionProvider } from "./contexts/session-context";
 import { EventContextProvider } from "./contexts/event-context";
-import gc from "@sg/game-client-base";
 import { CustomUrlContextProvider } from "./contexts/custom-url-context";
 
 const container = new ContainerLib.Container();
-
-// const gcContainer = gc.getContainer();
-// const ConnectionHandle = gcContainer.resolve(gc.Connection.ConnectionHandlers.ConnectHandler);
-// console.log(ConnectionHandle);  
 
 const gameEventSubject = createGameEventSubject();
 const errorMessageSubject = createErrorMessageEventSubject();
