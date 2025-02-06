@@ -14,19 +14,20 @@ import { AuthContext } from "../contexts/auth-context";
 import { useContext } from "react";
 import { TemplateDisplay } from "../components/TemplateDisplay";
 import { DisconnectButton } from "../components/DisconnectButton";
-import { CustomUrlContext } from "../contexts/custom-url-context";
 import { CustomUrlEditor } from "../components/CustomUrlEditor";
 import { SnackbarProvider } from "notistack";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import SignNameDialog from "../components/SignNameDialog";
+import { useInlineCustomUrlConfig } from "../hooks/useCustomUrl";
 
 export function IndexPage() {
     const { session } = useContext(AuthContext);
-    const { useCustomUrl, customUrl } = useContext(CustomUrlContext);
     const { gameList, currentGame, currentGameIndex, setCurrentGameIndex } = useGameName();
     const gameService = useInjection<GameCommunicationService>(GameCommunicationService);
     const { payload, handlePayloadChange, eventName, setEventName, handleSubmit, isValidPayload } = usePayloadSubmit();
     const { gameEvents, flushGameEvents } = useGameEvent();
+    
+    const { useCustomUrl, customUrl, setCustomUrl, setUseCustomUrl } = useInlineCustomUrlConfig();
     
     useErrorEvent();
 
@@ -75,7 +76,12 @@ export function IndexPage() {
                             currentGameIndex={currentGameIndex}
                             setCurrentGameIndex={setCurrentGameIndex}
                         />
-                        <CustomUrlEditor/>
+                        <CustomUrlEditor 
+                            customUrl={customUrl}
+                            setCustomUrl={setCustomUrl}
+                            setUseCustomUrl={setUseCustomUrl}
+                            useCustomUrl={useCustomUrl}
+                        />
                         <SignInButton handleSocketSignIn={handleSocketSignIn} />
                         <DisconnectButton handleSocketSignIn={handleSocketDisconnect} />
                         <Editor isValidJson={isValidPayload} value={payload} onChange={handlePayloadChange} />
