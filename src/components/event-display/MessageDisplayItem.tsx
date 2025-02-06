@@ -1,8 +1,11 @@
 import { AccordionSummary, Typography, AccordionDetails } from "@mui/material";
-import { GameEvent } from "../../subjects/event";
+import { GameEvent, GameEventType } from "../../subjects/event";
 import Accordion from "@mui/material/Accordion";
 import { ExpandMore } from "@mui/icons-material";
-import { JsonEditor } from "json-edit-react"
+import { JsonEditor } from "json-edit-react";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 enum EventColors {
     FINISH = '#ffeb3b',
@@ -16,6 +19,14 @@ const getPayloadInfo = (payload: any) => {
     const firstKey = isJsonObject && Object.keys(payload).length > 0 ? Object.keys(payload)[0] : '';
     return { firstKey };
 };
+
+const getIcon = (event: GameEvent) => {
+  switch(event.type) {
+    case GameEventType.RECEIVE: return <ArrowDownwardIcon sx={{paddingRight: "1rem"}}/>;
+    case GameEventType.SENT: return <ArrowUpwardIcon/>
+    default: return <CancelIcon/>
+  }
+}
 
 const getBackgroundColor = (event: GameEvent): string => {
     if (event.payload?.finish) return EventColors.FINISH;
@@ -53,7 +64,8 @@ const MessageDisplayItem = ({ event }: { event: GameEvent}) => {
           expandIcon={<ExpandMore />}
           aria-controls="panel1-content"
           id="panel1-header"
-        >
+        > 
+          {getIcon(event)}
           <Typography component="span">
             {event.name}
             {firstKey && (

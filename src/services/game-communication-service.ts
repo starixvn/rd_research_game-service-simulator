@@ -2,7 +2,7 @@ import ContainerLib from "../lib/container";
 import "reflect-metadata";
 import { Subject } from "rxjs";
 import { ErrorMessage } from "../subjects/error";
-import { GameEvent } from "../subjects/event";
+import { GameEvent, GameEventType } from "../subjects/event";
 import { GetSocketConnectionOption as getSocketConnectionOption, SocketClientWrapper } from "./socket-service";
 
 
@@ -37,7 +37,8 @@ export class GameCommunicationService {
             this._socket.subscribeAny((event, payload) => {
                 this._gameEventSubject.next({
                     name: event,
-                    payload: payload
+                    payload: payload,
+                    type: GameEventType.RECEIVE
                 });
             });
             this._socket.subscribe({
@@ -45,7 +46,8 @@ export class GameCommunicationService {
                 eventHandler: () => {
                     this._gameEventSubject.next({
                         name: "disconnect",
-                        payload: null
+                        payload: null,
+                        type: GameEventType.NONE
                     });
                 },
             })
@@ -72,7 +74,12 @@ export class GameCommunicationService {
         this._socket.emit({
             name: event,
             payload: payload
-        })
+        });
+        this._gameEventSubject.next({
+            name: event,
+            payload: payload,
+            type: GameEventType.SENT
+        });
     }
 
     destroy() {
