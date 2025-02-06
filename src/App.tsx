@@ -6,7 +6,7 @@ import { GameCommunicationService } from "./services/game-communication-service"
 import { SocketClientWrapper } from "./services/socket-service";
 import { createErrorMessageEventSubject } from "./subjects/error";
 import { createGameEventSubject } from "./subjects/event";
-import { SessionProvider } from "./contexts/session-context";
+import { AuthProvider } from "./contexts/auth-context";
 import { EventContextProvider } from "./contexts/event-context";
 import { CustomUrlContextProvider } from "./contexts/custom-url-context";
 
@@ -30,13 +30,13 @@ function App() {
       <BrowserRouter>
         <Routes>  
           <Route element={
-            <SessionProvider>
+            <AuthProvider>
                 <CustomUrlContextProvider>
                   <EventContextProvider>
                     <IndexPage/>
                   </EventContextProvider>
                 </CustomUrlContextProvider>
-            </SessionProvider>} index/>
+            </AuthProvider>} index/>
         </Routes>
       </BrowserRouter>
   </ContainerProvider>
