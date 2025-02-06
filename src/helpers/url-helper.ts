@@ -1,6 +1,6 @@
 import { getAppConfig } from "../configs";
 
-const defaultSubDomain = getAppConfig().proxy?.subDomain ?? "l1-proxy1";
+const defaultSubDomain = getAppConfig().proxy?.subDomain ?? "l1-proxy";
 
 export function buildUrl(
     subDomain: string = defaultSubDomain, 

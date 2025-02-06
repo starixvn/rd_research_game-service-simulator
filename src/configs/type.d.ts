@@ -1,5 +1,12 @@
+interface Game {
+    name?: string;
+    namespace?: string;
+    path?: string;
+}
+
 interface Window {
-    appConfig?: AppConfig
+    appConfig?: AppConfig;
+    supportedGames?: Game[]
 }
 interface ProxyConfig {
     ssl: string;

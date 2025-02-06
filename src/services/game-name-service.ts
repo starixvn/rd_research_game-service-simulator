@@ -1,7 +1,4 @@
-import { GameServiceClientSingleton } from "./game-service";
-
-export async function getGames() {
-    const gameServiceClient = GameServiceClientSingleton.getGameClientInstance();
-    const gameConfiguration = await gameServiceClient?.getGameConfiguration();
-    return gameConfiguration;
+export async function getGames(): Promise<Game[]> {
+    const games = window?.supportedGames ?? []
+    return Promise.resolve(games);
 }

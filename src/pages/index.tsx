@@ -32,9 +32,10 @@ export function IndexPage() {
 
     function handleSocketSignIn() {
         flushGameEvents();
+
         gameService?.initialize({
-            namespace: currentGame.name.toLowerCase(),
-            path: currentGame.name.toLowerCase(),
+            namespace: currentGame.namespace,
+            path: currentGame.path,
             useCustomUrl,
             customUrl
         });

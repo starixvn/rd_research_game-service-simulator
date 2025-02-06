@@ -4,6 +4,8 @@ import { useGames } from "./useGames";
 
 export type Game = {
     name: string;
+    path: string;
+    namespace: string;
 }
 
 export function useGameName() {
