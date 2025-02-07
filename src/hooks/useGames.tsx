@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { Game } from "./useGameName";
-import { getGames } from "../services/game-name-service";
+import { addGame, getGames } from "../services/game-name-service";
 
 export function useGames() {
     const [gameList, setGames] = useState<Game[]>([]);
+
+    async function handleAddGame(game: Game) {
+        setGames([...gameList, game]);
+        await addGame(game);
+    }
 
     useEffect( () => {
         async function fetchGames() {
@@ -23,5 +28,6 @@ export function useGames() {
 
     return {
         gameList,
+        handleAddGame
     }
 }

@@ -1,8 +1,7 @@
 import { MessageDisplay } from "../components/event-display/MessageDisplay";
-import { SignInButton } from "../components/SignInButton";
 import { GameCommunicationService } from "../services/game-communication-service";
 import { useInjection } from "../hooks/useInjection";
-import { Grid2 as Grid } from "@mui/material";
+import { Button, Grid2 as Grid } from "@mui/material";
 import { usePayloadSubmit } from "../hooks/usePayloadSubmit";
 import { Editor } from "../components/Editor";
 import { EventNameInput } from "../components/EventNameInput";
@@ -11,23 +10,32 @@ import { useGameName } from "../hooks/useGameName";
 import { GameNameSelect } from "../components/GameNameSelect";
 import { useGameEvent } from "../hooks/useGameEvent";
 import { AuthContext } from "../contexts/auth-context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TemplateDisplay } from "../components/TemplateDisplay";
-import { DisconnectButton } from "../components/DisconnectButton";
 import { CustomUrlEditor } from "../components/CustomUrlEditor";
 import { SnackbarProvider } from "notistack";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import SignNameDialog from "../components/SignNameDialog";
 import { useInlineCustomUrlConfig } from "../hooks/useCustomUrl";
+import { ConnectionButtons } from "../components/ConnectionButtons";
+import AddGameDialog from "../components/AddGameDialog";
 
 export function IndexPage() {
     const { session } = useContext(AuthContext);
-    const { gameList, currentGame, currentGameIndex, setCurrentGameIndex } = useGameName();
+    const { gameList, currentGame, currentGameIndex, setCurrentGameIndex, handleAddGame } = useGameName();
     const gameService = useInjection<GameCommunicationService>(GameCommunicationService);
     const { payload, handlePayloadChange, eventName, setEventName, handleSubmit, isValidPayload } = usePayloadSubmit();
     const { gameEvents, flushGameEvents } = useGameEvent();
-    
     const { useCustomUrl, customUrl, setCustomUrl, setUseCustomUrl } = useInlineCustomUrlConfig();
+    const [ addGameDialogOpen, setAddGameDialogOpen] = useState<boolean>(false);
+
+    function openAddGameDialog() {
+        setAddGameDialogOpen(true);
+    }
+
+    function closeAddGameDialog() {
+        setAddGameDialogOpen(false);
+    }
     
     useErrorEvent();
 
@@ -35,14 +43,13 @@ export function IndexPage() {
         flushGameEvents();
 
         gameService?.initialize({
-            namespace: currentGame.namespace,
-            path: currentGame.path,
+            namespace: currentGame?.namespace ?? "marblefootball",
+            path: currentGame?.path ?? "marblefootball",
             useCustomUrl,
             customUrl
         });
         gameService?.emit("signin", session);
     }
-
 
 
     function handleSocketDisconnect() {
@@ -51,6 +58,7 @@ export function IndexPage() {
 
     return (
         <>
+            <AddGameDialog open={addGameDialogOpen} handleAddGame={handleAddGame} handleCloseDialog={closeAddGameDialog}/>
             <SignNameDialog/>
             <Grid
                     container 
@@ -71,7 +79,19 @@ export function IndexPage() {
                             padding: "1rem",
                             overflow: "scroll",
                         }}
-                    >   <GameNameSelect 
+                    >   
+                        <Button 
+                            variant="outlined" 
+                            color="success" 
+                            sx={{
+                                width: "100%",
+                                marginBottom: ".75rem"
+                            }}
+                            onClick={openAddGameDialog}
+                            >
+                                Start by adding a new game
+                        </Button>
+                        <GameNameSelect 
                             gameList={gameList}
                             currentGameIndex={currentGameIndex}
                             setCurrentGameIndex={setCurrentGameIndex}
@@ -82,8 +102,10 @@ export function IndexPage() {
                             setUseCustomUrl={setUseCustomUrl}
                             useCustomUrl={useCustomUrl}
                         />
-                        <SignInButton handleSocketSignIn={handleSocketSignIn} />
-                        <DisconnectButton handleSocketSignIn={handleSocketDisconnect} />
+                        <ConnectionButtons 
+                            handleSocketDisconnect={handleSocketDisconnect}
+                            handleSocketSignIn={handleSocketSignIn}
+                        />
                         <Editor isValidJson={isValidPayload} value={payload} onChange={handlePayloadChange} />
                         <EventNameInput value={eventName} onChange={setEventName} />
                         <SendSocketEventButton onClick={handleSubmit} disabled={!isValidPayload}/>

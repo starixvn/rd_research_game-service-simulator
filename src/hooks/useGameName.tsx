@@ -11,11 +11,12 @@ export type Game = {
 export function useGameName() {
 
     const [ currentGameIndex, setCurrentGameIndex ] = useState<number>(0);
-    const { gameList } = useGames();
+    const { gameList, handleAddGame } = useGames();
     return {
         gameList,
         currentGame: gameList[currentGameIndex],
         currentGameIndex,
-        setCurrentGameIndex
+        setCurrentGameIndex,
+        handleAddGame
     }
 }
