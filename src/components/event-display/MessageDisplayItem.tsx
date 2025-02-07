@@ -1,4 +1,4 @@
-import { AccordionSummary, Typography, AccordionDetails } from "@mui/material";
+import { AccordionSummary, Typography, AccordionDetails, Box } from "@mui/material";
 import { GameEvent, GameEventType } from "../../subjects/event";
 import Accordion from "@mui/material/Accordion";
 import { ExpandMore } from "@mui/icons-material";
@@ -35,6 +35,15 @@ const getBackgroundColor = (event: GameEvent): string => {
     return EventColors.DEFAULT;
 };
 
+const getTimeDisplay = (date: Date) => {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  const miliseconds = date.getMilliseconds();
+
+  return `${hours}:${minutes}:${seconds}:${miliseconds}`;
+}
+
 const MessageDisplayItem = ({ event }: { event: GameEvent}) => {
     const { firstKey } = getPayloadInfo(event.payload);
 
@@ -65,22 +74,40 @@ const MessageDisplayItem = ({ event }: { event: GameEvent}) => {
           aria-controls="panel1-content"
           id="panel1-header"
         > 
-          {getIcon(event)}
-          <Typography component="span">
-            {event.name}
-            {firstKey && (
-              <Typography 
-                component="span" 
-                sx={{ 
-                  marginLeft: 1,
-                  color: 'text.secondary',
-                  fontSize: '0.85em'
-                }}
-              >
-                {firstKey}
+          <Box sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%"
+          }}>
+              <Box>
+              {getIcon(event)}
+              <Typography component="span">
+                {event.name}
+                {firstKey && (
+                  <Typography 
+                    component="span" 
+                    sx={{ 
+                      marginLeft: 1,
+                      color: 'text.secondary',
+                      fontSize: '0.85em'
+                    }}
+                  >
+                    {firstKey}
+                  </Typography>
+                )}
               </Typography>
-            )}
-          </Typography>
+            </Box>
+            <Typography component="span" 
+                  sx={{ 
+                    marginLeft: 1,
+                    color: 'text.secondary',
+                    fontSize: '0.85em'
+                  }}>
+                    ⏰ {getTimeDisplay(event.timestamp)}
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
             <JsonEditor 

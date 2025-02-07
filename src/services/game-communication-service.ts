@@ -38,7 +38,8 @@ export class GameCommunicationService {
                 this._gameEventSubject.next({
                     name: event,
                     payload: payload,
-                    type: GameEventType.RECEIVE
+                    type: GameEventType.RECEIVE,
+                    timestamp: new Date()
                 });
             });
             this._socket.subscribe({
@@ -47,7 +48,8 @@ export class GameCommunicationService {
                     this._gameEventSubject.next({
                         name: "disconnect",
                         payload: null,
-                        type: GameEventType.NONE
+                        type: GameEventType.NONE,
+                        timestamp: new Date()
                     });
                 },
             })
@@ -78,14 +80,16 @@ export class GameCommunicationService {
         this._gameEventSubject.next({
             name: event,
             payload: payload,
-            type: GameEventType.SENT
+            type: GameEventType.SENT,
+            timestamp: new Date()
         });
     }
 
     destroy() {
         this._gameEventSubject.next({
             name: "disconnect",
-            payload: null
+            payload: null,
+            timestamp: new Date()
         });
         this._socket.dispose();
         this._socket.clearEventMap();

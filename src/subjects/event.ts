@@ -10,6 +10,7 @@ export interface GameEvent {
     name: string;
     payload: any;
     type?: GameEventType;
+    timestamp: Date;
 }
 
 export function createGameEventSubject() {
