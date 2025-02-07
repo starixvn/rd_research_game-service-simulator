@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { Game } from "./useGameName";
-import { addGame, getGames } from "../services/game-name-service";
+import { addGame, deleteGame, getGames } from "../services/game-name-service";
 
 export function useGames() {
     const [gameList, setGames] = useState<Game[]>([]);
 
     async function handleAddGame(game: Game) {
-        setGames([...gameList, game]);
         await addGame(game);
+        setGames([...gameList, game]);
+    }
+
+    async function handleDeleteGame(deleteIndex: number) {
+        const newGames = gameList.filter((_, index) => index !== deleteIndex);
+        await deleteGame(deleteIndex);
+        setGames(newGames);
     }
 
     useEffect( () => {
@@ -28,6 +34,7 @@ export function useGames() {
 
     return {
         gameList,
-        handleAddGame
+        handleAddGame,
+        handleDeleteGame
     }
 }

@@ -22,7 +22,7 @@ import AddGameDialog from "../components/AddGameDialog";
 
 export function IndexPage() {
     const { session } = useContext(AuthContext);
-    const { gameList, currentGame, currentGameIndex, setCurrentGameIndex, handleAddGame } = useGameName();
+    const { gameList, currentGame, currentGameIndex, setCurrentGameIndex, handleAddGame, handleDeleteGame } = useGameName();
     const gameService = useInjection<GameCommunicationService>(GameCommunicationService);
     const { payload, handlePayloadChange, eventName, setEventName, handleSubmit, isValidPayload } = usePayloadSubmit();
     const { gameEvents, flushGameEvents } = useGameEvent();
@@ -92,6 +92,7 @@ export function IndexPage() {
                                 Start by adding a new game
                         </Button>
                         <GameNameSelect 
+                            handleDeleteGameByIndex={handleDeleteGame}
                             gameList={gameList}
                             currentGameIndex={currentGameIndex}
                             setCurrentGameIndex={setCurrentGameIndex}

@@ -25,7 +25,7 @@ export async function addGame(game: Game): Promise<void> {
 export async function deleteGame(deleteIndex: number): Promise<void> {
     const games = await getGames();
 
-    const newGameList = games.filter((index) => index !== deleteIndex)
+    const newGameList = games.filter((_,index) => index !== deleteIndex)
 
     const gameString = JSON.stringify(newGameList);
 

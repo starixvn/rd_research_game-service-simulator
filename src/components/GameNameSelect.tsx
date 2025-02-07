@@ -1,16 +1,17 @@
-import { Box, IconButton, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { Game } from "../hooks/useGameName";
-import DeleteIcon from '@mui/icons-material/Delete';
 import { GameNameSelectItem } from "./GameNameSelectItem";
 
 export function GameNameSelect({
     gameList,
     currentGameIndex,
-    setCurrentGameIndex
+    setCurrentGameIndex,
+    handleDeleteGameByIndex,
 }: {
     gameList: Game[],
     currentGameIndex: number,
-    setCurrentGameIndex: (index: number) => void
+    setCurrentGameIndex: (index: number) => void,
+    handleDeleteGameByIndex: (index: number) => void
 }) {
 
     function handleChange(event: SelectChangeEvent<number>) {
@@ -19,26 +20,9 @@ export function GameNameSelect({
 
     const gameListDisplay = gameList.map((game, index) => {
         return <MenuItem key={index} value={index}>
-            <GameNameSelectItem game={game}/>
+            <GameNameSelectItem game={game} deleteGame={() => handleDeleteGameByIndex(index)}/>
         </MenuItem>
             
-
-            
-        // return <MenuItem key={index} value={index}>
-        //     <Box sx={{
-        //         display: "flex",
-        //         flexDirection: "row",
-        //         alignItems: "center",
-        //         justifyContent: "space-between",
-        //         width: "100%",
-        //         height: "1.5rem"
-        //     }}>
-        //         <Typography>{game.name}</Typography>
-        //         <IconButton>
-        //             <DeleteIcon/>
-        //         </IconButton>
-        //     </Box>
-        // </MenuItem>
     })
 
     const hasAnyGame = gameList.length > 0;
@@ -51,6 +35,9 @@ export function GameNameSelect({
         sx={{
             marginBottom: "1rem"
         }}
+        renderValue={(value) => <MenuItem sx={{
+            height: "1.5rem"
+        }} key={value} value={value}>{gameList[value].name}</MenuItem>}
     >
         {gameListDisplay}
     </Select> : null;
