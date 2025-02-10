@@ -8,7 +8,7 @@ export type FatalError = {
     detail: string;
 }
 
-type PushFatalErrorFunction = (err: FatalError) => void
+type PushFatalErrorFunction = (err: FatalError | null) => void
 
 type FatalErrorContextProps = {
     pushError: PushFatalErrorFunction | null;

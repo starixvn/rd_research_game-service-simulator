@@ -14,12 +14,16 @@ export function useInlineAuthentication() {
     const appType = searchParams.get("appType");
 
     function handleTokenSsoError() {
-        console.log(pushError)
         if (!pushError) return;
         pushError({
             title: "SSO Failed",
             detail: "SSO token is missing, invalid, or expired, please get new token and then try again"
         });
+    }
+
+    function handleTokenSsoSuccess() {
+        if (!pushError) return;
+        pushError(null)
     }
     
     async function handleSignName(nickname: string) {
@@ -27,6 +31,7 @@ export function useInlineAuthentication() {
         const authorizeResponse = await signName(session, nickname);
         if (!authorizeResponse || (authorizeResponse as AuthorizeResponse).authorized  === undefined ) return;
         setAuthorized((authorizeResponse as AuthorizeResponse).authorized)
+        handleTokenSsoSuccess()
     }
 
 
@@ -42,10 +47,9 @@ export function useInlineAuthentication() {
             const authorizeResponse = await authorize(userSession);
             if (!authorizeResponse || (authorizeResponse as AuthorizeResponse).authorized  === undefined ) return handleTokenSsoError();
             setAuthorized((authorizeResponse as AuthorizeResponse).authorized)
+            handleTokenSsoSuccess()
         }
-        console.log("Token ", token)
         if (!token) {
-            console.log("token unauth")
             handleTokenSsoError()
         }        
         if (token && appType) {
