@@ -6,6 +6,7 @@ const authService =
     .getUserClientInstance()?.auth;
 
 export async function sso(token: string, appType: number) {
+    console.log("sso")
     const userSession = await authService?.sso(
         token,
         appType

@@ -19,6 +19,7 @@ import SignNameDialog from "../components/SignNameDialog";
 import { useInlineCustomUrlConfig } from "../hooks/useCustomUrl";
 import { ConnectionButtons } from "../components/ConnectionButtons";
 import AddGameDialog from "../components/AddGameDialog";
+import { FatalErrorBackdrop } from "../components/FatalErrorBackdrop";
 
 export function IndexPage() {
     const { session } = useContext(AuthContext);
@@ -58,7 +59,6 @@ export function IndexPage() {
 
     return (
         <>
-            <AddGameDialog open={addGameDialogOpen} handleAddGame={handleAddGame} handleCloseDialog={closeAddGameDialog}/>
             <SignNameDialog/>
             <Grid
                     container 
@@ -125,5 +125,7 @@ export function IndexPage() {
                         <MessageDisplay gameEvents={gameEvents} />
                     </Grid>
                 </Grid>
+                <FatalErrorBackdrop/>
+                <AddGameDialog open={addGameDialogOpen} handleAddGame={handleAddGame} handleCloseDialog={closeAddGameDialog}/>
             </>)
 }

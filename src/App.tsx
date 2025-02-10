@@ -8,6 +8,7 @@ import { createErrorMessageEventSubject } from "./subjects/error";
 import { createGameEventSubject } from "./subjects/event";
 import { AuthProvider } from "./contexts/auth-context";
 import { EventContextProvider } from "./contexts/event-context";
+import { FatalErrorProvider } from "./contexts/fatal-error-context";
 
 const container = new ContainerLib.Container();
 
@@ -29,11 +30,14 @@ function App() {
       <BrowserRouter>
         <Routes>  
           <Route element={
+            <FatalErrorProvider>
             <AuthProvider>
-                  <EventContextProvider>
-                    <IndexPage/>
-                  </EventContextProvider>
-            </AuthProvider>} index/>
+                <EventContextProvider>
+                  <IndexPage/>
+                </EventContextProvider>
+            </AuthProvider>
+            </FatalErrorProvider>
+            } index/>
         </Routes>
       </BrowserRouter>
   </ContainerProvider>
