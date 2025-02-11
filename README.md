@@ -1,50 +1,41 @@
-# React + TypeScript + Vite
+# Game Client Simulator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+The game client simulator serves the following:
+- For game service developers to debug socket event locally.
+- For testers to test game service when cocos game client is not ready.
+- For game client developers for game event references.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Usage
 
-## Expanding the ESLint configuration
+### Open the simulator
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Go to game lobby simulator.
+Example [ LOCAL_3 Simulator](https://l1-glbs3.lumigame.com/signin?obCustId=9648717&appType=1)
+- Make sure to enter the lobby information correspondingly.
+- Click on Simulator checkbox
+![Game Client Simulator on Lobby Simulator](./docs/images/LobbySimulator.png)
+- Click Get Token.
+- Click on the link below Redirect to open simulator .
 
-- Configure the top-level `parserOptions` property like this:
+### Add a game
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Click on "Start by adding a new game":
+![Adding a game](./docs/images/AddNewGame.png)
+- Enter game name, path and namespace. The game name is up to you. The socket path and namespace depend on the service configuration:
+![Enter game info](./docs/images/NewGameUI.png)
+Please be informed that the game info are stored in local storage of your web browser.
+### Connect to game
+- Click Sign In to connect and log in to the game service
+![Sign In](./docs/images/SignIn.png)
+### Send an event
+- Click on an event template to create an event to send to the game service.
+![Overview UI](./docs/images/Templates.png)
+- OR edit event name and JSON data on the editor to send custom event.
+- Click on Send Event to send event to the game service.
+- Watch sent and received event on the right section.
+- For more information about sent and received event, click on the event to expand its detail
+![Expand](./docs/images/Expand.png)
+## Supported environment
+- LOCAL_3
