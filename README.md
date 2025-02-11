@@ -45,3 +45,9 @@ Please be informed that the game info are stored in local storage of your web br
 
 ## Supported environment
 - LOCAL_3
+
+
+For other environment, please paste the Game Client Simulator url into the Dev Machine IP
+- LOCAL: game-client-simulator.lumigame.com
+- LOCAL_1: local1.game-client-simulator.lumigame.com/
+- LOCAL_2: local2.game-client-simulator.lumigame.com/
