@@ -37,5 +37,11 @@ Please be informed that the game info are stored in local storage of your web br
 - Watch sent and received event on the right section.
 - For more information about sent and received event, click on the event to expand its detail
 ![Expand](./docs/images/Expand.png)
+
+### Dev machine development
+- Click on Use Custom Url and change the url to localhost:port for debug locally on dev machine
+![Local Dev](./docs/images/Local%20Dev.png)
+
+
 ## Supported environment
 - LOCAL_3
