@@ -19,7 +19,6 @@
     "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^6.4.1",
     "@mui/material": "^6.4.1",
-    "@sg/game-client-base": "^1.57.3",
     "axios": "^1.7.9",
     "babel-plugin-transform-commonjs": "^1.1.6",
     "chance": "^1.1.12",

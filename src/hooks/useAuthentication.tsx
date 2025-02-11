@@ -1,15 +1,18 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { AuthorizeResponse, ReCheckInResponse, SSOResponse } from "sc-user-service-client/dist/auth";
+import { AuthorizeResponse, ReCheckInResponse, Response, SSOResponse } from "sc-user-service-client/dist/auth";
 import { authorize, getAvailableSession, reCheckin, signName, signOut, sso } from "../services/auth-service";
 import { FatalErrorContext } from "../contexts/fatal-error-context";
 import { useReCheckIn } from "./useReCheckin";
+import { GameCommunicationService } from "../services/game-communication-service";
+import { useInjection } from "./useInjection";
 
 export function useInlineAuthentication() {
     const { pushError } = useContext(FatalErrorContext);
     const [searchParams, setSearchparams ] = useSearchParams();
     const [session, setSession] = useState<SSOResponse | null>(null);
     const [isAuthorized, setAuthorized] = useState<boolean | null>(null);
+    const gameService = useInjection<GameCommunicationService>(GameCommunicationService);
 
     const token = searchParams.get("token");
     const appType = searchParams.get("appType");
@@ -53,7 +56,15 @@ export function useInlineAuthentication() {
     const  handleSignName = useCallback(async (nickname: string) => {
         if (!session) return handleTokenSsoError();
         const authorizeResponse = await signName(session, nickname);
-        if (!authorizeResponse || (authorizeResponse as AuthorizeResponse).authorized  === undefined ) return;
+        if (!authorizeResponse || (authorizeResponse as AuthorizeResponse).authorized  === undefined ) {
+            const errCode = (authorizeResponse as Response)?.errorCode ?? "Unknown error";
+            const payload = (authorizeResponse as Response)?.message ?? "Unknown error";
+            gameService.errorEventSubject.next({
+                error: errCode,
+                payload
+            });
+            return;
+        };
         setAuthorized((authorizeResponse as AuthorizeResponse).authorized)
         handleTokenSsoSuccess()
     }, [session, setAuthorized, handleTokenSsoSuccess]);
